@@ -30,8 +30,30 @@ const GetMemberController = async(req, res) => {
             
         }
 
+        const urlavatar = data[0].avatar_url
 
-        res.status(200).send({msg : "berhasil mengambil member", data : data})
+        console.log(urlavatar.toString())
+
+
+        const { data:dataavatar, error:erroravatar } = await supabase
+        .storage
+        .from('avatars')
+        .createSignedUrl(urlavatar.toString(), 60)
+
+        if (erroravatar) {
+            throw erroravatar
+            
+        }
+
+        console.log(dataavatar)
+
+        const datamember = data.map(member =>({
+            ...member,
+            avatar_url_fix : dataavatar.signedUrl
+        }))
+
+
+        res.status(200).send({msg : "berhasil mengambil member", data : datamember[0]})
         
     } catch (error) {
 

@@ -50,10 +50,16 @@ const GetOneProjectController = async(req,res)=>{
             
         }
 
-        console.log(data);
+        data[0].tech_made.forEach(element => {
+
+            console.log(element)
+            
+        });
 
 
-        res.status(200).send({msg : "berhasil ambil data satu project", data : data});        
+
+
+        res.status(200).send({msg : "berhasil ambil data satu project", data : data[0]});        
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
@@ -65,12 +71,13 @@ const AddProjectController = async (req, res) => {
 
     try {
 
-        const {namaproject,deskripsiproject,kategoriproject} = req.body
+        const {namaproject,deskripsiproject,kategoriproject,techmade} = req.body
 
         const newProject = {
             'nama' : namaproject,
             'deskripsi' : deskripsiproject,
-            'kategori' : kategoriproject
+            'kategori' : kategoriproject,
+            'tech_made' : techmade
 
         }
 

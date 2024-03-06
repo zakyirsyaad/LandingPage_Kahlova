@@ -20,10 +20,6 @@ app.use(bodyParser.json());
 
 app.use(route);
 
-
-
-
-
 app.get("/", (req, res) => {
   res.send("halo world")
 });
