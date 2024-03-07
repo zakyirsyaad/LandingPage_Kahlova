@@ -11,7 +11,7 @@ const GetAllProjectController =  async (req, res) => {
             query = query.eq('kategori', kategori);
         }
 
-        console.log(kategori)
+
 
     
 
@@ -32,8 +32,22 @@ const GetAllProjectController =  async (req, res) => {
             throw error;
         }
 
-        console.log(data);
-        res.status(200).send({msg : "berhasil ambil data semua project", data : data});
+        const data_projects = await Promise.all(data.map(async (project) => {
+            const { data: dataurl, error: errorurl } = await supabase
+                .storage
+                .from('project_picture')
+                .createSignedUrls(project.foto_project, 60);
+
+            if (errorurl) {
+                throw errorurl;
+            }
+
+            return {
+                ...project,
+                foto_urls: dataurl.map(file => file.signedUrl),
+            };
+        }));
+        res.status(200).send({msg : "berhasil ambil data semua project", data : data_projects});
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
