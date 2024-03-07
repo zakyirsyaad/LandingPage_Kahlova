@@ -1,3 +1,4 @@
+import { Url } from "url";
 import { supabase } from "../../config.js";
 
 const GetAllMemberController = async(req,res)=>{
@@ -10,8 +11,37 @@ const GetAllMemberController = async(req,res)=>{
             
         }
 
+        const data_projects = await Promise.all(data.map(async (project) => {
+            // console.log(project.avatar_url);
+        
+            // Check if project.avatar_url is truthy (not null or undefined)
+            if (project.avatar_url) {
+                const { data: dataurl, error: errorurl } = await supabase
+                    .storage
+                    .from('avatars')
+                    .createSignedUrl(project.avatar_url, 60);
+        
+                if (errorurl) {
+                    throw errorurl;
+                }
+        
+                return {
+                    ...project,
+                    foto_url: dataurl.signedUrl,
+                };
+            } else {
+                // If project.avatar_url is null, set foto_url to null
+                return {
+                    ...project,
+                    foto_url: null,
+                };
+            }
+        }));
+        
 
-        res.status(200).send({msg : "success mengambil data member ",data : data});
+
+
+        res.status(200).send({msg : "success mengambil data member ",data : data_projects});
         
     } catch (error) {
         res.status(500).send({msg:"internal server error",err : error});
