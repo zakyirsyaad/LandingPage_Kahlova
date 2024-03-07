@@ -5,6 +5,7 @@ import { GetAllMemberController, GetMemberController } from "../Controller/membe
 import { checkAuthSession } from "../utils/userSession.js";
 import multer from "multer";
 import { InsertAvatarMemberController } from "../Controller/memberavatar.js";
+import { UploadProjectPicture } from "../Controller/projectpicture.js";
 
 const route = Router();
 // Set up multer storage
@@ -103,29 +104,9 @@ route.post('/signin_member', async (req, res) => {
 
 })
 
-route.get('/signup_berhasil',async (req, res) => {
-    // Mendapatkan URL lengkap dari request
-    const fullUrl = req.protocol + '://' + req.get('host') + req.url;
+// route.get('/signup_berhasil',async (req, res) => {
 
-    // // Menggunakan modul url untuk mem-parsing URL
-    // const parsedUrl = parse(fullUrl);
-
-    // // Mengambil bagian hash dari URL
-    // const hash = parsedUrl.hash;
-
-    // // Menggunakan modul querystring untuk mem-parsing nilai dari hash
-    // const queryParams = parseQueryString(hash.slice(1)); // Menghapus karakter '#' dari hash
-
-    // // Mendapatkan access_token
-    // const accessToken = queryParams.access_token;
-
-    // console.log('Access Token:', accessToken);
-
-    // // Lakukan sesuatu dengan access token, misalnya, teruskan ke fungsi tertentu
-    // // atau gunakan untuk otentikasi
-
-    res.send("halo" + fullUrl);
-})
+// })
 
 
 
@@ -135,7 +116,8 @@ route.get('/getallproject', GetAllProjectController);
 
 route.get('/getproject/:project_id', GetOneProjectController)
 
-route.post('/project', AddProjectController)
+// route.post('/project',upload.array('project',5), AddProjectController)
+route.post('/project',upload.array('project',5), UploadProjectPicture,AddProjectController)
 
 route.patch('/project', UpdateProjectController)
 

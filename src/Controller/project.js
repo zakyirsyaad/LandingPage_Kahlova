@@ -73,10 +73,13 @@ const AddProjectController = async (req, res) => {
 
         const {namaproject,deskripsiproject,kategoriproject,techmade} = req.body
 
+        const project_picture = req.projectURL
+
         const newProject = {
             'nama' : namaproject,
             'deskripsi' : deskripsiproject,
             'kategori' : kategoriproject,
+            'foto_project' : project_picture,
             'tech_made' : techmade
 
         }
