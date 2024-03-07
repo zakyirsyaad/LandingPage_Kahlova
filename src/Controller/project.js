@@ -50,16 +50,32 @@ const GetOneProjectController = async(req,res)=>{
             
         }
 
-        data[0].tech_made.forEach(element => {
+        // console.log(data[0].foto_project)
 
-            console.log(element)
+
+        
+        const { data:datafoto, error:errorfoto } = await supabase
+        .storage
+        .from('project_picture')
+        .createSignedUrls(data[0].foto_project, 60)
+
+        if (errorfoto) {
+            throw errorfoto
             
-        });
+        }
+
+        const url_picture = datafoto.map(file => file.signedUrl)
+
+
+        const project_data = {
+            ...data[0],
+            foto_url: datafoto.map(file => file.signedUrl),
+        };
 
 
 
 
-        res.status(200).send({msg : "berhasil ambil data satu project", data : data[0]});        
+        res.status(200).send({msg : "berhasil ambil data satu project", data : project_data});        
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
