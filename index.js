@@ -24,8 +24,11 @@ app.get("/", (req, res) => {
   res.send("halo world")
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-
-export{app}
+app.listen(port, (err, res) => {
+  if (err) {
+      console.log(err)
+      return res.status(500).send(err.message)
+  } else {
+      console.log('[INFO] Server Running on port:', port)
+  }
+})
