@@ -44,7 +44,7 @@ const GetAllProjectController =  async (req, res) => {
 
             return {
                 ...project,
-                foto_urls: dataurl.map(file => file.signedUrl),
+                foto_url: dataurl.map(file => file.signedUrl),
             };
         }));
         res.status(200).send({msg : "berhasil ambil data semua project", data : data_projects});
