@@ -4,9 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 
 // import morgan from "morgan";
 import bodyParser from "body-parser";
-import { route } from "./src/Router/route.js";
+import { route } from "../src/Router/route.js";
 
-import { supabase } from "./config.js";
+import { supabase } from "../config.js";
 
 // import path from "path"
 
@@ -28,4 +28,4 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-module.exports = app;
+export{app}
